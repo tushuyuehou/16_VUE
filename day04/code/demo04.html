@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <title>Title</title>
+</head>
+<body>
+<div id="example">
+  <router-view></router-view>
+</div>
+
+<script>
+
+  var Check = Vue.component('check-component',{
+    data:function(){
+      return {price:100}
+    },
+    methods:{
+      jumpToPay:function(){
+        this.$router
+          .push('/myPay/'+this.price);
+      }
+    },
+    template:`
+      <div>
+        <h1>商品查看页面</h1>
+        <router-link
+        :to="'/myPay/'+price">
+          去支付
+        </router-link>
+        <button @click="jumpToPay">
+          去支付
+        </button>
+      </div>
+    `
+  })
+  var Pay = Vue.component('pay-component',{
+    data:function(){
+      return {
+        myPrice:""
+      }
+    },
+    created:function(){
+      this.myPrice =
+        this.$route.params.price
+    },
+    template:`
+      <div>
+        <h1>商品支付页面</h1>
+        <h1>{{"当前商品价格为"+myPrice}}</h1>
+        <router-link to="/mySend">
+          支付完成，去发货
+        </router-link>
+      </div>
+    `
+  })
+  var Send = Vue.component('send-component',{
+    methods:{
+      jumpToCheck:function(){
+        this.$router.push('/myCheck')
+      }
+    },
+    template:`
+      <div>
+        <h1>商品发货页面</h1>
+        <button @click="jumpToCheck">
+            查看商品
+        </button>
+      </div>
+    `
+  })
+
+  var NotFound = Vue.component(
+    'not-found',
+    {
+      template:`
+        <h1>404 page not found</h1>
+      `
+    }
+  )
+
+  new Vue({
+    el: '#example',
+    router:new VueRouter({
+      routes:[
+        {path:'',component:Check},
+        {path:'/myCheck',component:Check},
+        {
+          path:'/myPay/:price',
+          component:Pay
+        },
+        {path:'/mySend',component:Send},
+        {path:'*',component:NotFound}
+      ]
+    }),
+    data: {
+      msg: 'VueJS is Awesome'
+    }
+  })
+</script>
+
+
+</body>
+</html>

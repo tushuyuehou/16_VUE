@@ -1,0 +1,211 @@
+一、框架
+	软件框架是一套可被反复使用的优秀的代码，用来解决复杂的问题
+
+	好处：
+		①提高了开发速度
+		②提高了代码的复用率、
+		③提高了代码的质量 
+
+
+二、VueJS概述
+vuejs.org
+
+1、what
+	vue是一个 构建用户界面（ui） 渐进式的js的框架
+	（并不是所有的做UI的框架 都是由丰富的样式类库）
+	CLI: command line interface 终端用户界面
+	GUI: graphical user interface 图形化用户界面
+
+	vue = angular + React 
+
+2、where
+	饿了吗、滴滴、阿里巴巴
+	主要是用在数据操作比较频繁的 单页面应用程序中
+
+
+3、why	
+	①中文文档的支持
+	②容易上手 学习曲线比较缓和
+	③速度快
+	④体积小
+	⑤基于组件化的开发方式
+	⑥代码的可读性好、可维护性比较好
+	⑦极大的降低了耦合度(解耦：降低耦合度)
+
+4、how
+	方式1：引入对应的文件
+
+	方式2：基于命令行的开发方式
+		# 全局安装 vue-cli
+		 npm install --global vue-cli
+		# 创建一个基于 webpack 模板的新项目
+		 vue init webpack my-project
+		# 安装依赖，走你
+		 cd my-project
+		 npm install
+		 npm run dev
+
+三、Vue基本语法（双花括号+常用指令）
+
+		1、双花括号
+		interploation 插值表达式/mustache 胡子
+
+		语法：
+			<any> {{表达式}} </any>
+			将表达式执行的结果 输出到当前调用双花括号的元素 的innerHTML中
+
+
+			（10:32 - 10:42）
+			练习：创建一个demo03_lianxi.html
+			将一个对象数组（学生数组，学生是有sex/age/score,一共有3个学生）
+			展示在table中，thead有3列，分别是性别、年龄、成绩
+
+		2、循环指令
+
+			程序 ：
+				顺序结构、选择结构、循环结构
+
+			v-for用法：
+				<any v-for="临时变量 in 集合"></any>
+				<any v-for="(临时变量,下标) in 集合"></any>
+				目的就是①遍历集合 ②在遍历结合的同时，创建多个调用v-for的元素
+				举例：
+				<li v-for="myValue in list">{{myValue}}</li>
+
+
+		3、选择指令
+			file->new->edit file templates->左上角的加号-》修改name为vue，extension为html--》把模板内容粘贴-》ok
+
+			语法：
+				<any v-if="表达式"></any>
+				多重分支判断：
+					<p v-if=""></p>
+					<p v-else-if=""></p>
+					<p v-else></p>
+			作用：
+				根据表达式执行结果的真假，来决定是否要将当前的元素挂载到DOM
+
+			总结：3w1h\双花括号\v-for\v-if/v-else-if\v-else
+
+		4、事件绑定
+		 <any v-on:eventName="处理函数"> </any>
+		 给指定的标签 绑定上当eventName事件触发时，要执行的处理函数
+		 举例：
+		 <input type='text' v-on:change="handleChange"/>
+
+		 练习：（2:36 - 2:46）
+		 创建一个demo07_lianxi.html
+		 在视图中有一个列表，有一个按钮，当点击按钮时，向列表中插入一条100以内随机的数据；当列表长度大于10的时候，列表自动从DOM中移除。
+
+		 视图：无序列表、按钮
+		 功能：
+			①准备一个数组 [100,200,300],展示在列表中
+			②点击按钮，创建随机数，将随机数插入到数组中
+			③调用选择指令，当条件为：列表长度大于10，从DOM中移除
+
+		编程方式发生了变化，从DOM驱动 变成了 数据驱动型的。
+
+		5、属性绑定
+			基本用法：
+			<any v-bind:属性名称="表达式"></any>
+			作用：将表达式执行的结果的值 绑定给 属性
+			举例：
+				new Vue({
+					data:{
+						myUrl:'http://www.tmooc.com',
+						imgUrl:'img/1.jpg',
+						imgName:'1.jpg'
+					}
+				})
+				<a v-bind:href="myUrl"></a>
+				<img v-bind:src="imgUrl"/>
+				<img v-bind:src="'img/'+imgName"/>
+				
+				5.2 样式和样式类的绑定
+				<any v-bind:style="{fontSize:mySize}">
+				</any>
+
+				<any v-bind:class="{myRed:true}"></any>
+				
+
+		绑定：
+			①双向数据绑定
+				方向1：将数据绑定到视图中，当数据发生变化，视图会自动的更新
+				方式： {{}} v-if v-for 等常用指令
+
+				方向2：将表单元素中用户操作的结果 绑定到 某一个变量
+				方式： v-model
+
+			②事件绑定
+				v-on:click
+				@click
+			③属性绑定
+				v-bind:src
+				:src
+				:style
+				:class
+				:disabled
+
+		v-for/v-if/v-else-if/v-else/v-on/v-bind
+		v-html/v-show/v-bind
+
+
+		练习：
+			视图 两个input和一个按钮
+			功能：点击按钮，将input中输入的数字进行求和 并在控制台输出结果
+
+四、Vue中的组件
+	组件是一个可被反复使用的，带有特定功能的视图；
+	组件并不是vue的专利，Vue/Angular/React的组件都是以w3c中的WebComponent为标准创建的。
+	组件树的存在！！
+
+	4.1 组件如何进行封装？
+		
+		4.1.1 全局组件：
+		Vue.component('my-component',{
+			template:'<h1>hello</h1>'
+		});
+		
+		4.1.2 局部组件：
+		new Vue({
+    el: '#example',
+    data: {
+      msg: 'VueJS is Awesome'
+    },
+    components: {
+      'my-header': {
+        template:'<h1>it is a header</h1>'
+      }
+    }
+  })
+
+	4.2 调用组件
+
+		像使用普通的html标签一样，去调用组件类
+		<my-component></my-component>
+
+
+	4.3 注意事项
+		①全局组件并不是意味着可以用在任何一个位置，嵌套在任何一个组件
+		②局部组件只能直接用在el所指定的标签范围内，不能嵌套在其他组件
+		③组件在使用必须写开闭标签
+		<my-buttton></my-button>
+
+
+练习：
+	搞定分页功能
+
+	视图：
+		上一页 下一页 分页按钮构成的
+	功能：
+	①默认第一页高亮显示
+	②第一页选中，上一页不能点击
+	③最后一个选中，下一页不能点击
+	④选中某一页，当前页面高亮显示
+
+	v-bind v-for v-on {{}}
+
+	初始化：指定一个数组[1,2,3,4,5]
+	把数组遍历创建多个按钮
+	定义一个数据，保存当前选中的是第一页
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <title>Title</title>
+</head>
+<body>
+<div id="example">
+  <!--指定容器-->
+  <router-view></router-view>
+</div>
+
+<script>
+
+  var List = Vue.component(
+    'list-component',
+    {
+      data:function(){
+        return {pList:[100,200,300]}
+      },
+      methods:{
+        jump:function(myIndex){
+          this.$router
+            .push('/myDetail/'+myIndex);
+        }
+      },
+      template:`
+        <ul>
+          <li v-for="(tmp,index) in pList">
+            <button @click="jump(index)">
+              {{tmp}}
+            </button>
+          </li>
+        </ul>
+      `
+    }
+  );
+
+  var Detail = Vue.component(
+    'detail-component',
+    {
+      data:function(){
+        return {myId:""}
+      },
+      created:function(){
+        //举例：现在在组件创建完毕之后去读取通过路由跳转传来的参数
+        this.myId =
+            this.$route.params.id;
+      },
+      template:`
+        <h1>这是详情页 {{myId}}</h1>
+      `
+    }
+  )
+
+
+  var NotFound = Vue.component(
+    'not-found',
+    {
+      template:`
+        <h1>404 page not found</h1>
+      `
+    }
+    )
+
+  const myRoutes = [
+    {path:'',component:List},
+    {path:'/myList',component:List},
+    {
+      path:'/myDetail/:id',
+      component:Detail
+    },
+    {path:'*',component:NotFound}
+  ]
+
+  const myRouter = new VueRouter({
+    routes:myRoutes
+  })
+
+  new Vue({
+    el: '#example',
+    router:myRouter,
+    data: {
+      msg: 'VueJS is Awesome'
+    }
+  })
+</script>
+
+
+</body>
+</html>

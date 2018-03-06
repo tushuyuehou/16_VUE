@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/vue.js"></script>
+  <script src="js/vue-router.js"></script>
+  <title>Title</title>
+</head>
+<body>
+<div id="example">
+  <router-view></router-view>
+</div>
+
+<script>
+  var Login = Vue.component(
+    'login-component',{
+    template:`
+      <div>
+        <h1>这是登录页面</h1>
+      </div>
+    `
+  })
+
+  var Mail = Vue.component(
+    'mail-component',{
+      methods:{
+        jump:function(desPath){
+          this.$router.push(desPath);
+        },
+        back:function(){
+          this.$router.go(-1);
+        }
+      },
+      template:`
+        <div>
+          <h1>这是邮箱主页面</h1>
+          <button @click="back">
+            返回
+          </button>
+          <button
+          @click="jump('/myInbox')">
+            收件箱
+          </button>
+          <button
+          @click="jump('/myOutbox')">
+            发件箱
+          </button>
+          <router-view></router-view>
+        </div>
+      `
+    }
+  )
+
+  var Inbox = Vue.component(
+    'Inbox-component',{
+      template:`
+        <ul>
+          <li>收件箱1</li>
+          <li>收件箱2</li>
+          <li>收件箱2</li>
+        </ul>
+      `
+    }
+  )
+
+  var Outbox = Vue.component(
+    'Outbox-component',{
+      template:`
+        <ul>
+          <li>发件箱1</li>
+          <li>发件箱2</li>
+          <li>发件箱3</li>
+        </ul>
+      `
+    }
+  )
+
+  const myRoutes = [
+    {path:'',component:Login},
+    {path:'/myLogin',component:Login},
+    {
+      path:'/myMail',
+      component:Mail,
+      children:[
+        {path:'',component:Inbox},
+        {path:'/myInbox',component:Inbox},
+        {path:'/myOutbox',component:Outbox}
+      ]
+    }
+  ]
+
+  const myRouter = new VueRouter({
+    routes:myRoutes
+  })
+
+  new Vue({
+    el: '#example',
+    router:myRouter,
+    data: {
+      msg: 'VueJS is Awesome'
+    }
+  })
+</script>
+
+
+</body>
+</html>
